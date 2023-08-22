@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Captured Videos - Camera {{ camera_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Captured Videos - Camera {{ camera_name }}</h2>
+    
+    <ul>
+        {% for video in videos %}
+        <li><a href="{{ url_for('play_video', camera_id=camera_id, video_name=videos) }}">{{ videos}}</a></li>
+        {% endfor %}
+    </ul>
+    
+    <a href="{{ url_for('view_camera', camera_id=camera_id) }}">Back to Camera View</a>
+</body>
+</html>

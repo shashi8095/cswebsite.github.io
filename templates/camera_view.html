@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera View</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Camera {{ camera_id }}: {{ camera_name }}</h2>
+
+    <!-- Add the video element to display captured video -->
+    <video id="camera-feed" autoplay></video>
+
+    <!-- Add the "Start Recording" and "Stop Recording" buttons -->
+    <button id="start-recording">Start Recording</button>
+    <button id="stop-recording" disabled>Stop Recording</button>
+
+    <form action="{{ url_for('upload_video', camera_id=camera_id) }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="video" id="video-input" style="display: none;">
+        <label for="video-input">Upload Recorded Video</label>
+        <button type="submit">Upload</button>
+        <a href="{{ url_for('captured_videos', camera_id=camera_id) }}">Captured Videos</a>
+    </form>
+
+    <script>
+        let mediaRecorder;
+        let recordedChunks = [];
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                var videoElement = document.getElementById('camera-feed');
+                videoElement.srcObject = stream;
+
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = function (event) {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = function () {
+                    var blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    var url = URL.createObjectURL(blob);
+
+                    var a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'captured-video.webm';
+                    document.body.appendChild(a);
+                    a.click();
+
+                    recordedChunks = [];
+                };
+            })
+            .catch(function (error) {
+                console.error('Error accessing camera:', error);
+            });
+
+        document.getElementById('start-recording').addEventListener('click', function () {
+            mediaRecorder.start();
+            document.getElementById('start-recording').disabled = true;
+            document.getElementById('stop-recording').disabled = false;
+        });
+
+        document.getElementById('stop-recording').addEventListener('click', function () {
+            mediaRecorder.stop();
+            document.getElementById('start-recording').disabled = false;
+            document.getElementById('stop-recording').disabled = true;
+        });
+    </script>
+</body>
+</html>

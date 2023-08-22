@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login Page</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    meta
+    <style>
+ body {
+	margin: 0;
+	padding: 0;
+	background-color: #9a9797;
+}
+
+h1 {
+	margin: 0;
+	padding: 20px;
+	font-size: 36px;
+	text-align: center;
+}
+
+form {
+	width: 400px;
+	margin: 50px auto;
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	padding: 20px;
+}
+
+label {
+	display: block;
+	margin-bottom: 8px;
+}
+
+input[type="text"], input[type="password"] {
+	display: block;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	border: none;
+	background-color: #f2f2f2;
+}
+
+input[type="submit"] {
+	background-color: #4CAF50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+input[type="submit"]:hover {
+	background-color: #3e8e41;
+}
+
+    </style>
+</head>
+<body>
+	<form id="login-form" action="javascript:void(0);" method="post">
+		<h1>Login</h1>
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" required>
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" required>
+		<input type="submit" value="Login">
+	</form>
+    <script>
+    const loginForm = document.getElementById("login-form");
+    loginForm.addEventListener("submit", function(event) {
+	event.preventDefault();
+	const username = document.getElementById("username").value;
+	const password = document.getElementById("password").value;
+	if (username === "username" && password === "password") {
+		window.location.href = "screen.html";
+	} else {
+		alert("Invalid username or password");
+	}
+});
+
+    </script>
+</body>
+</html>
